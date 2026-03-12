@@ -2,23 +2,24 @@ pipeline {
     agent any
 
     stages {
-       stage('Clone Repository') {
-    steps {
-        git branch: 'main', url: 'https://github.com/ASHIKA200521/cicdpipeliness.git'
-    }
-}
+
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/ASHIKA200521/cicdpipeliness.git'
+            }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t myapp .'
+                bat 'docker build -t my-app .'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 myapp'
+                bat 'docker run -d -p 3000:3000 my-app'
             }
         }
+
     }
 }
