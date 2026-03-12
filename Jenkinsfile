@@ -3,23 +3,20 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/ASHIKA200521/cicdpipeliness.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t my-app .'
+                bat 'docker build --no-cache -t vite-app .'
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy Container') {
             steps {
-                bat 'docker run -d -p 3000:3000 my-app'
+                bat """
+                docker stop vite-container || echo Container not running
+                docker rm vite-container || echo Container not found
+                docker run -d -p 8081:80 --name vite-container vite-app
+                """
             }
         }
-
     }
 }
