@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/ASHIKA200521/cicdpipeliness.git'
-            }
+       stage('Clone Repository') {
+    steps {
+        git branch: 'main', url: 'https://github.com/ASHIKA200521/cicdpipeliness.git'
+    }
+}
         }
 
         stage('Build Docker Image') {
