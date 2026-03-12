@@ -1,14 +1,23 @@
-FROM node:20-alpine AS build
-WORKDIR /myapp
+pipeline {
+    agent any
 
-COPY package*.json ./
-RUN npm install
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/ASHIKA200521/cicdpipeliness.git'
+            }
+        }
 
-COPY . .
-RUN npm run build
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp .'
+            }
+        }
 
-FROM nginx:alpine
-COPY --from=build /myapp/dist /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+        stage('Run Container') {
+            steps {
+                sh 'docker run -d -p 3000:3000 myapp'
+            }
+        }
+    }
+}
